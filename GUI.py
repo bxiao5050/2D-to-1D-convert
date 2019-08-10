@@ -43,7 +43,7 @@ class GUI(Frame):
 
 
     def on_start(self, e):
-        print('df')
+        pass
 
 
 

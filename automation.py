@@ -51,14 +51,7 @@ class Automation(Frame):
             self.gui.folderPath.config(state = 'normal')
             self.gui.pauseTime.config(state = 'normal')
             self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
-
-    def executionTime(self):
-        start = time.time()
-        while True:
-            if self.terminate_flag == False:
-                self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
-            else:
-                return
+    
     def display(self):
            while True:
             if self.terminate_flag == False:
@@ -71,6 +64,15 @@ class Automation(Frame):
 
             else:
                 return
+
+    def executionTime(self):
+        start = time.time()
+        while True:
+            if self.terminate_flag == False:
+                self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
+            else:
+                return
+
 
     def run(self):
         pauseTime = float(self.gui.pauseTime.get())
@@ -164,6 +166,9 @@ class Automation(Frame):
         if total_frames == self.finished_frames:
             self.gui.countL1.config(text = f'all {total_frames} data are finished', fg = 'blue')
 
+    def convert(self, seconds):
+        return time.strftime("%H:%M:%S", time.gmtime(seconds))
+        
     def initialization(self):
         self.terminate_flag = True
         self.gui.startB.config(state = 'normal')
@@ -171,8 +176,7 @@ class Automation(Frame):
         self.gui.pauseTime.config(state = 'normal')
 
 
-    def convert(self, seconds):
-        return time.strftime("%H:%M:%S", time.gmtime(seconds))
+
 
 
     def oneround(self, frameblock, pauseTime= 5):

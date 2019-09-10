@@ -26,25 +26,6 @@ class FormattedScanlist():
         """
         {'diffNum': [3, 3, 2, 3, 3, 3, 1], 'diffName': ['191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_001.gfrm>191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_002.gfrm>191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_003.gfrm',
         """
-    def frames(self):
-        scanLists = self._scanLists()
-        frames = {'diffNum':[], 'diffName':[]}
-        for v in scanLists.values():
-            frames['diffNum'].append(len(v))
-            frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
-        return frames
-        
-    def _scanLists(self):
-
-        files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
-
-        #sorted file names in a given directory
-        filenames = sorted([os.path.basename(f) for f in files])
-        scanLists = defaultdict(list)
-        for f in filenames:
-            scanLists[f[0:-8]].append(f)
-        return scanLists
-
     def _getBlock(self, scanLists):
         frames = {'diffNum':[], 'diffName':[]}
 
@@ -66,20 +47,38 @@ class FormattedScanlist():
             block['filenames'].append(ss)
             index += self.scan_n
         return block
+        
+    def frames(self):
+        scanLists = self._scanLists()
+        frames = {'diffNum':[], 'diffName':[]}
+        for v in scanLists.values():
+            frames['diffNum'].append(len(v))
+            frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
+        return frames
+        
+    def _scanLists(self):
+
+        files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
+
+        #sorted file names in a given directory
+        filenames = sorted([os.path.basename(f) for f in files])
+        scanLists = defaultdict(list)
+        for f in filenames:
+            scanLists[f[0:-8]].append(f)
+        return scanLists
 
 
 
 
 
 
-
-def main():
-    root = Tk()
-    app = FormattedScanlist()
-
+# def main():
+#     root = Tk()
+#     app = FormattedScanlist()
 
 
 
 
-if __name__ == '__main__':
-    main()
+
+# if __name__ == '__main__':
+#     main()

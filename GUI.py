@@ -46,18 +46,6 @@ class GUI(Frame):
         pass
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def main():
     root = Tk()
     root.title('convert 2D XRD to 1D pattern')

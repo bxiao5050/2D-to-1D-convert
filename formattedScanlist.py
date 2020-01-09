@@ -14,18 +14,17 @@ class FormattedScanlist():
 
         self.workPath = askdirectory() if workPath is None else workPath
 
+    def _scanLists(self):
 
-        # block = self.block()
-        # print(self.frames())
-        # print(block['filenames'][0])
-        # print(block)
+        files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
 
-    def block(self):
-        return self._getBlock(self._scanLists())
-
-        """
-        {'diffNum': [3, 3, 2, 3, 3, 3, 1], 'diffName': ['191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_001.gfrm>191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_002.gfrm>191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_003.gfrm',
-        """
+        #sorted file names in a given directory
+        filenames = sorted([os.path.basename(f) for f in files])
+        scanLists = defaultdict(list)
+        for f in filenames:
+            scanLists[f[0:-8]].append(f)
+        return scanLists
+        
     def _getBlock(self, scanLists):
         frames = {'diffNum':[], 'diffName':[]}
 
@@ -56,29 +55,5 @@ class FormattedScanlist():
             frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
         return frames
         
-    def _scanLists(self):
-
-        files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
-
-        #sorted file names in a given directory
-        filenames = sorted([os.path.basename(f) for f in files])
-        scanLists = defaultdict(list)
-        for f in filenames:
-            scanLists[f[0:-8]].append(f)
-        return scanLists
 
 
-
-
-
-
-# def main():
-#     root = Tk()
-#     app = FormattedScanlist()
-
-
-
-
-
-# if __name__ == '__main__':
-#     main()

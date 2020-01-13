@@ -164,20 +164,7 @@ class Automation(Frame):
         self.initialization()
         if total_frames == self.finished_frames:
             self.gui.countL1.config(text = f'all {total_frames} data are finished', fg = 'blue')
-
-    def convert(self, seconds):
-        return time.strftime("%H:%M:%S", time.gmtime(seconds))
-        
-    def initialization(self):
-        self.terminate_flag = True
-        self.gui.startB.config(state = 'normal')
-        self.gui.folderPath.config(state = 'normal')
-        self.gui.pauseTime.config(state = 'normal')
-
-
-
-
-
+            
     def oneround(self, frameblock, pauseTime= 5):
         if self.getFocused == False:
             pyautogui.hotkey('winleft', '1')
@@ -240,31 +227,20 @@ class Automation(Frame):
 
 
         pyautogui.typewrite(['left', 'enter'])
+    def convert(self, seconds):
+        return time.strftime("%H:%M:%S", time.gmtime(seconds))
+        
+    def initialization(self):
+        self.terminate_flag = True
+        self.gui.startB.config(state = 'normal')
+        self.gui.folderPath.config(state = 'normal')
+        self.gui.pauseTime.config(state = 'normal')
 
 
 
 
 
-
-
-
-
-
-
-def main():
-    root = Tk()
-    root.title('convert 2D XRD to 1D pattern')
-    app = Automation(root)
-    app.pack()
-
-    root.mainloop()
-
-
-
-
-
-if __name__ == '__main__':
-    main()
+    
 
 
 

@@ -26,6 +26,16 @@ class Automation(Frame):
         self.terminate_flag = True
 
 
+
+
+    def executionTime(self):
+        start = time.time()
+        while True:
+            if self.terminate_flag == False:
+                self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
+            else:
+                return
+                
     def on_start(self):
         self.gui.startB.config(state = 'disabled')
         self.gui.folderPath.config(state = 'disabled')
@@ -51,28 +61,7 @@ class Automation(Frame):
             self.gui.folderPath.config(state = 'normal')
             self.gui.pauseTime.config(state = 'normal')
             self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
-
-    def executionTime(self):
-        start = time.time()
-        while True:
-            if self.terminate_flag == False:
-                self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
-            else:
-                return
-                
-    def display(self):
-           while True:
-            if self.terminate_flag == False:
-                suffix = ''
-                for i in range(3):
-                    suffix += '.'
-                    for j in range(40):
-                        self.gui.countL2.config(text =  f'{self.runInf}' + suffix, fg = 'gray')
-                        time.sleep(0.02)
-
-            else:
-                return
-
+            
     def run(self):
         pauseTime = float(self.gui.pauseTime.get())
         self.workPath = self.gui.folderPath.get()
@@ -164,7 +153,7 @@ class Automation(Frame):
         self.initialization()
         if total_frames == self.finished_frames:
             self.gui.countL1.config(text = f'all {total_frames} data are finished', fg = 'blue')
-            
+
     def oneround(self, frameblock, pauseTime= 5):
         if self.getFocused == False:
             pyautogui.hotkey('winleft', '1')

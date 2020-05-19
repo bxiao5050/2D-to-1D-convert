@@ -22,12 +22,6 @@ class Automation(Frame):
         self.gui.stopB.config(command = self.on_terminate)
 
 
-    def on_terminate(self):
-        self.terminate_flag = True
-
-
-
-
     def executionTime(self):
         start = time.time()
         while True:
@@ -35,6 +29,10 @@ class Automation(Frame):
                 self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
             else:
                 return
+    def on_terminate(self):
+        self.terminate_flag = True
+
+
                 
     def on_start(self):
         self.gui.startB.config(state = 'disabled')
@@ -51,16 +49,16 @@ class Automation(Frame):
         self.runInf = ''
 
 
-        try:
-            threading.Thread(target=self.run).start()
-            threading.Thread(target=self.executionTime).start()
-            threading.Thread(target=self.display).start()
-        except:
-            self.terminate_flag = True
-            self.gui.startB.config(state = 'normal')
-            self.gui.folderPath.config(state = 'normal')
-            self.gui.pauseTime.config(state = 'normal')
-            self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
+        # try:
+        #     threading.Thread(target=self.run).start()
+        #     threading.Thread(target=self.executionTime).start()
+        #     threading.Thread(target=self.display).start()
+        # except:
+        self.terminate_flag = True
+        self.gui.startB.config(state = 'normal')
+        self.gui.folderPath.config(state = 'normal')
+        self.gui.pauseTime.config(state = 'normal')
+        self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
             
     def run(self):
         pauseTime = float(self.gui.pauseTime.get())

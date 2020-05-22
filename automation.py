@@ -48,18 +48,6 @@ class Automation(Frame):
         self.xy_filename = ''
         self.runInf = ''
 
-
-        # try:
-        #     threading.Thread(target=self.run).start()
-        #     threading.Thread(target=self.executionTime).start()
-        #     threading.Thread(target=self.display).start()
-        # except:
-        self.terminate_flag = True
-        self.gui.startB.config(state = 'normal')
-        self.gui.folderPath.config(state = 'normal')
-        self.gui.pauseTime.config(state = 'normal')
-        self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
-            
     def run(self):
         pauseTime = float(self.gui.pauseTime.get())
         self.workPath = self.gui.folderPath.get()
@@ -98,55 +86,7 @@ class Automation(Frame):
                 self.gui.pauseTime.config(state = 'disabled')
                 stableRunTime = 0
             # trialTimes = 0 # how many times did I try
-            while True:
-                if self.terminate_flag == True:
-                    self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
-                    self.initialization()
-                    return
-                iteration_N +=1
-                time.sleep(0.02)
-                # if pauseTime > 10:
-                #     pauseTime = 5
-                #     self.gui.pauseTime.delete(0, 'end')
-                #     self.gui.pauseTime.insert(0, pauseTime)
-                if os.path.exists(os.path.join(self.workPath, self.xy_filename)):
-                    self.finished_frames +=1
-                    self.runInf  =  f'obtained "{self.xy_filename_base}"'
-                    self.gui.log.see('end')
-                    self.gui.log.insert('end', f'{self.finished_frames} ---> obtained   "{self.xy_filename}"'+'\n')
-                    self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}' ,fg = 'black')
-                    break
-                if iteration_N > 100 and iteration_N < 106: #re-do it after waiting for 5s
-                    self.runInf  =  f'failed to obtain "{self.xy_filename_base}", try again'
-                    pyautogui.typewrite(['enter','esc','esc'])
-                    time.sleep(pauseTime/50)
-                    pyautogui.typewrite(['enter','esc','esc'])
-                    time.sleep(pauseTime/50)
-                    pyautogui.typewrite(['enter','esc','esc'])
-                    pauseTime += 0.3 + random.random()/7
-                    stableRunTime = 0
-                    self.gui.pauseTime.config(state = 'normal')
-                    self.gui.pauseTime.delete(0, 'end')
-                    self.gui.pauseTime.insert(0, pauseTime)
-                    self.gui.pauseTime.config(state = 'disabled')
-                    self.oneround(frameblock, pauseTime)
-                elif iteration_N >= 106 and iteration_N <108:
-                    self.runInf  =  f'failed to obtain "{self.xy_filename_base}", increase time and try again'
-                    pyautogui.typewrite(['enter','esc','esc'])
-                    time.sleep(pauseTime/50)
-                    pyautogui.typewrite(['enter','esc','esc'])
-                    time.sleep(pauseTime/50)
-                    pyautogui.typewrite(['enter','esc','esc'])
-                    pauseTime = 5
-                    stableRunTime = 0
-                    self.gui.pauseTime.config(state = 'normal')
-                    self.gui.pauseTime.delete(0, 'end')
-                    self.gui.pauseTime.insert(0, pauseTime)
-                    self.gui.pauseTime.config(state = 'disabled')
-                elif iteration_N >= 108 :
-                    self.gui.log.see('end')
-                    self.gui.log.insert('end', f'"{self.xy_filename}" failed'+'\n')
-                    break
+
 
         self.initialization()
         if total_frames == self.finished_frames:

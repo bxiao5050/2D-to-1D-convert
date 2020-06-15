@@ -21,19 +21,6 @@ class Automation(Frame):
 
         self.gui.stopB.config(command = self.on_terminate)
 
-
-    def executionTime(self):
-        start = time.time()
-        while True:
-            if self.terminate_flag == False:
-                self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
-            else:
-                return
-    def on_terminate(self):
-        self.terminate_flag = True
-
-
-                
     def on_start(self):
         self.gui.startB.config(state = 'disabled')
         self.gui.folderPath.config(state = 'disabled')
@@ -47,6 +34,19 @@ class Automation(Frame):
 
         self.xy_filename = ''
         self.runInf = ''
+    def executionTime(self):
+        start = time.time()
+        while True:
+            if self.terminate_flag == False:
+                self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
+            else:
+                return
+    def on_terminate(self):
+        self.terminate_flag = True
+
+
+                
+
 
     def run(self):
         pauseTime = float(self.gui.pauseTime.get())
@@ -154,19 +154,9 @@ class Automation(Frame):
 
 
         pyautogui.typewrite(['left', 'enter'])
+        
     def convert(self, seconds):
         return time.strftime("%H:%M:%S", time.gmtime(seconds))
-        
-    def initialization(self):
-        self.terminate_flag = True
-        self.gui.startB.config(state = 'normal')
-        self.gui.folderPath.config(state = 'normal')
-        self.gui.pauseTime.config(state = 'normal')
-
-
-
-
-
     
 
 

@@ -58,3 +58,13 @@ class FormattedScanlist():
         
 
 
+    def _scanLists(self):
+
+        files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
+
+        #sorted file names in a given directory
+        filenames = sorted([os.path.basename(f) for f in files])
+        scanLists = defaultdict(list)
+        for f in filenames:
+            scanLists[f[0:-8]].append(f)
+        return scanLists        

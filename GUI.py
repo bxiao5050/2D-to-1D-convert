@@ -44,16 +44,3 @@ class GUI(Frame):
     def on_start(self, e):
         pass
 
-
-def main():
-    root = Tk()
-    root.title('convert 2D XRD to 1D pattern')
-    app = GUI(root)
-    app.pack()
-
-    root.mainloop()
-
-
-
-if __name__ == '__main__':
-    main()

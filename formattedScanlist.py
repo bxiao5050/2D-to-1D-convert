@@ -23,8 +23,16 @@ class FormattedScanlist():
         scanLists = defaultdict(list)
         for f in filenames:
             scanLists[f[0:-8]].append(f)
-        return scanLists        
-
+        return scanLists  
+              
+    def frames(self):
+        scanLists = self._scanLists()
+        frames = {'diffNum':[], 'diffName':[]}
+        for v in scanLists.values():
+            frames['diffNum'].append(len(v))
+            frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
+        return frames
+        
     def _getBlock(self, scanLists):
         frames = {'diffNum':[], 'diffName':[]}
 
@@ -34,7 +42,6 @@ class FormattedScanlist():
             frames['diffName'].append('>'.join(v))
 
         block = {'filenum':[], 'filenames':[]}
-
         index = 0
         while index <= len(frames['diffNum']):
             filenum = min([len(frames['diffNum'])-index, self.scan_n])
@@ -48,23 +55,6 @@ class FormattedScanlist():
 
         
 
-    def frames(self):
-        scanLists = self._scanLists()
-        frames = {'diffNum':[], 'diffName':[]}
-        for v in scanLists.values():
-            frames['diffNum'].append(len(v))
-            frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
-        return frames
-        
 
 
-    def _scanLists(self):
 
-        files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
-
-        #sorted file names in a given directory
-        filenames = sorted([os.path.basename(f) for f in files])
-        scanLists = defaultdict(list)
-        for f in filenames:
-            scanLists[f[0:-8]].append(f)
-        return scanLists        

@@ -13,7 +13,25 @@ class FormattedScanlist():
         self.scan_n = scan_n
 
         self.workPath = askdirectory() if workPath is None else workPath
+        
+    def _getBlock(self, scanLists):
+        frames = {'diffNum':[], 'diffName':[]}
 
+
+        for v in scanLists.values():
+            frames['diffNum'].append(len(v))
+            frames['diffName'].append('>'.join(v))
+
+        block = {'filenum':[], 'filenames':[]}
+        index = 0
+        while index <= len(frames['diffNum']):
+            filenum = min([len(frames['diffNum'])-index, self.scan_n])
+            block['filenum'].append(filenum)
+            s = '>'.join([v for v in frames['diffName'][index:filenum+index]])
+            ss =  ' '.join(['"{}"'.format(c) for c in s.split('>')])
+            block['filenames'].append(ss)
+            index += self.scan_n
+        return block
     def _scanLists(self):
 
         files = glob.glob(os.path.join(self.workPath, '*.gfrm'))
@@ -24,7 +42,7 @@ class FormattedScanlist():
         for f in filenames:
             scanLists[f[0:-8]].append(f)
         return scanLists  
-              
+
     def frames(self):
         scanLists = self._scanLists()
         frames = {'diffNum':[], 'diffName':[]}

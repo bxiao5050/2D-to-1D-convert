@@ -43,14 +43,7 @@ class FormattedScanlist():
             scanLists[f[0:-8]].append(f)
         return scanLists  
 
-    def frames(self):
-        scanLists = self._scanLists()
-        frames = {'diffNum':[], 'diffName':[]}
-        for v in scanLists.values():
-            frames['diffNum'].append(len(v))
-            frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
-        return frames
-        
+
     def _getBlock(self, scanLists):
         frames = {'diffNum':[], 'diffName':[]}
 

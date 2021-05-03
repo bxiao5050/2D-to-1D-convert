@@ -74,19 +74,6 @@ class Automation(Frame):
                 self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}' ,fg = 'black')
                 continue
 
-            self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}',fg = 'black')
-            self.oneround(frameblock, pauseTime)
-            iteration_N = 0 # record the iteration times
-            stableRunTime += 1
-            if stableRunTime >=2 and pauseTime >1:
-                pauseTime -= (0.07 + random.random()/20)
-                self.gui.pauseTime.config(state = 'normal')
-                self.gui.pauseTime.delete(0, 'end')
-                self.gui.pauseTime.insert(0, pauseTime)
-                self.gui.pauseTime.config(state = 'disabled')
-                stableRunTime = 0
-            # trialTimes = 0 # how many times did I try
-
 
         self.initialization()
         if total_frames == self.finished_frames:
@@ -104,7 +91,24 @@ class Automation(Frame):
         time.sleep(pauseTime/5)
         pyautogui.hotkey('ctrlleft', 'i')
         time.sleep(pauseTime/2)
+        
+        self.runInf  =  f'save 1D diffractio pattern as ".xy"'
+        pyautogui.typewrite(['tab'])
+        time.sleep(pauseTime/7)
+        pyautogui.typewrite(['down'])
+        time.sleep(pauseTime/4)
+        pyautogui.typewrite([ 'down'])
+        time.sleep(pauseTime/30)
+        pyautogui.typewrite([ 'down'])
+        time.sleep(pauseTime/30)
+        pyautogui.typewrite(['enter'])
+        time.sleep(pauseTime/10)
+        pyautogui.typewrite([ 'enter'])
+        time.sleep(pauseTime/5
+            )
 
+
+        pyautogui.typewrite(['left', 'enter'])
         # print(path)
 
         if self.isFirstRound == True:
@@ -137,24 +141,8 @@ class Automation(Frame):
         pyautogui.typewrite(['up', 'up', 'up', 'right', 'down', 'down', 'enter'])
         time.sleep(pauseTime/5)
 
-        self.runInf  =  f'save 1D diffractio pattern as ".xy"'
-        pyautogui.typewrite(['tab'])
-        time.sleep(pauseTime/7)
-        pyautogui.typewrite(['down'])
-        time.sleep(pauseTime/4)
-        pyautogui.typewrite([ 'down'])
-        time.sleep(pauseTime/30)
-        pyautogui.typewrite([ 'down'])
-        time.sleep(pauseTime/30)
-        pyautogui.typewrite(['enter'])
-        time.sleep(pauseTime/10)
-        pyautogui.typewrite([ 'enter'])
-        time.sleep(pauseTime/5
-            )
 
 
-        pyautogui.typewrite(['left', 'enter'])
-        
     def convert(self, seconds):
         return time.strftime("%H:%M:%S", time.gmtime(seconds))
     

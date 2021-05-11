@@ -13,7 +13,7 @@ class FormattedScanlist():
         self.scan_n = scan_n
 
         self.workPath = askdirectory() if workPath is None else workPath
-        
+
     def _getBlock(self, scanLists):
         frames = {'diffNum':[], 'diffName':[]}
 
@@ -41,15 +41,7 @@ class FormattedScanlist():
         scanLists = defaultdict(list)
         for f in filenames:
             scanLists[f[0:-8]].append(f)
-        return scanLists  
-
-    def frames(self):
-        scanLists = self._scanLists()
-        frames = {'diffNum':[], 'diffName':[]}
-        for v in scanLists.values():
-            frames['diffNum'].append(len(v))
-            frames['diffName'].append(' '.join(['"{}"'.format(c) for c in v]))
-        return frames
+        return scanLis
         
     def _getBlock(self, scanLists):
         frames = {'diffNum':[], 'diffName':[]}

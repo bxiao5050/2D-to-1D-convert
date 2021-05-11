@@ -80,6 +80,21 @@ class Automation(Frame):
             self.gui.countL1.config(text = f'all {total_frames} data are finished', fg = 'blue')
 
     def oneround(self, frameblock, pauseTime= 5):
+        for frameblock in frames['diffName']:
+            if self.terminate_flag == True:
+                self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
+                self.initialization()
+                return
+            self.xy_filename_base = frameblock.split('.gfrm')[0].replace('"','')
+            self.xy_filename = self.xy_filename_base + '_exported.xy'
+            self.runInf  =  f'convert "{self.xy_filename_base}"'
+            #check if the 1D pattern already exists
+            if os.path.exists(os.path.join(self.workPath, self.xy_filename)):
+                self.finished_frames +=1
+                self.gui.log.see('end')
+                self.gui.log.insert('end', f'{self.finished_frames} -- exists   "{self.xy_filename}"'+'\n')
+                self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}' ,fg = 'black')
+                continue
         if self.getFocused == False:
             pyautogui.hotkey('winleft', '1')
             self.getFocused = True
@@ -91,7 +106,7 @@ class Automation(Frame):
         time.sleep(pauseTime/5)
         pyautogui.hotkey('ctrlleft', 'i')
         time.sleep(pauseTime/2)
-        
+
         self.runInf  =  f'save 1D diffractio pattern as ".xy"'
         pyautogui.typewrite(['tab'])
         time.sleep(pauseTime/7)

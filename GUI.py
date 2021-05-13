@@ -39,7 +39,14 @@ class GUI(Frame):
         self.log.pack()
 
         master.bind("<F5>", self.on_start)
-
+        lf1 = LabelFrame(self, text = 'folder path')
+        lf2 = LabelFrame(self, text = 'time for each convert (s)')
+        self.countL1 = Label(self,font=("Times New Roman", 18, 'bold'), width = 50)
+        self.countL2 = Label(self,font=("Times New Roman", 10, 'bold'), width = 105)
+        self.countL3 = Label(self,font=("Times New Roman", 13, 'bold'))
+        lf3 = LabelFrame(self, text = 'log')
+        self.startB = Button(self, text = 'start', fg = 'blue')
+        self.startB.grid(row = 0, column = 0, padx = (5,5))
 
     def on_start(self, e):
         pass

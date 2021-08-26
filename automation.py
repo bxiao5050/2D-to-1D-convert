@@ -20,7 +20,16 @@ class Automation(Frame):
         self.gui.startB.config(command = self.on_start)
 
         self.gui.stopB.config(command = self.on_terminate)
-
+        try:
+            threading.Thread(target=self.run).start()
+            threading.Thread(target=self.executionTime).start()
+            threading.Thread(target=self.display).start()
+        except:
+            self.terminate_flag = True
+            self.gui.startB.config(state = 'normal')
+            self.gui.folderPath.config(state = 'normal')
+            self.gui.pauseTime.config(state = 'normal')
+            self.gui.countL1.config(text = f'(stopped)    {self.finished_frames} data are finished', fg = 'red')
 
     def on_terminate(self):
         self.terminate_flag = True
@@ -59,18 +68,6 @@ class Automation(Frame):
                 self.gui.countL3.config(text = f'execution time: {self.convert(time.time() - start)}' , fg = 'gray')
             else:
                 return
-    def display(self):
-           while True:
-            if self.terminate_flag == False:
-                suffix = ''
-                for i in range(3):
-                    suffix += '.'
-                    for j in range(40):
-                        self.gui.countL2.config(text =  f'{self.runInf}' + suffix, fg = 'gray')
-                        time.sleep(0.02)
-
-            else:
-                return
 
     def run(self):
         pauseTime = float(self.gui.pauseTime.get())
@@ -97,7 +94,27 @@ class Automation(Frame):
                 self.gui.log.insert('end', f'{self.finished_frames} -- exists   "{self.xy_filename}"'+'\n')
                 self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}' ,fg = 'black')
                 continue
-
+                if os.path.exists(os.path.join(self.workPath, self.xy_filename)):
+                    self.finished_frames +=1
+                    self.runInf  =  f'obtained "{self.xy_filename_base}"'
+                    self.gui.log.see('end')
+                    self.gui.log.insert('end', f'{self.finished_frames} ---> obtained   "{self.xy_filename}"'+'\n')
+                    self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}' ,fg = 'black')
+                    break
+                if iteration_N > 100 and iteration_N < 106: #re-do it after waiting for 5s
+                    self.runInf  =  f'failed to obtain "{self.xy_filename_base}", try again'
+                    pyautogui.typewrite(['enter','esc','esc'])
+                    time.sleep(pauseTime/50)
+                    pyautogui.typewrite(['enter','esc','esc'])
+                    time.sleep(pauseTime/50)
+                    pyautogui.typewrite(['enter','esc','esc'])
+                    pauseTime += 0.3 + random.random()/7
+                    stableRunTime = 0
+                    self.gui.pauseTime.config(state = 'normal')
+                    self.gui.pauseTime.delete(0, 'end')
+                    self.gui.pauseTime.insert(0, pauseTime)
+                    self.gui.pauseTime.config(state = 'disabled')
+                    self.oneround(frameblock, pauseTime)
             self.gui.countL1.config(text = f'total data: {total_frames}         finished: {self.finished_frames}',fg = 'black')
             self.oneround(frameblock, pauseTime)
             iteration_N = 0 # record the iteration times

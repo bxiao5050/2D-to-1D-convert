@@ -15,26 +15,10 @@ class FormattedScanlist():
         self.workPath = askdirectory() if workPath is None else workPath
 
 
-        frames = {'diffNum':[], 'diffName':[]}
-
-
-        for v in scanLists.values():
-            frames['diffNum'].append(len(v))
-            frames['diffName'].append('>'.join(v))
-
-        block = {'filenum':[], 'filenames':[]}
-        """
-        {'filenum': [4, 3], 'filenames': ['191106-K2-2 V6-IL-Ag-Ir-Pd-Pt-Ru_400_deg_001.gfrm>191106-K2-2
-        """
-        index = 0
-        while index <= len(frames['diffNum']):
-            filenum = min([len(frames['diffNum'])-index, self.scan_n])
-            block['filenum'].append(filenum)
-            s = '>'.join([v for v in frames['diffName'][index:filenum+index]])
-            ss =  ' '.join(['"{}"'.format(c) for c in s.split('>')])
-            block['filenames'].append(ss)
-            index += self.scan_n
-        return block
+        # block = self.block()
+        # print(self.frames())
+        # print(block['filenames'][0])
+        # print(block)
 
     def block(self):
         return self._getBlock(self._scanLists())
